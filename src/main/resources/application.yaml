@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: token-migration-service
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: migration
+      auto-index-creation: true
+
+server:
+  port: 9080
+
+migration-service-producer:
+  bootstrap-servers: ${BOOTSTRAP_SERVERS:localhost:39092}
+  topic-name: ${TOPIC_NAME:token-migration-data}
+  key-serializer: ${KEY_SERIALIZER:org.apache.kafka.common.serialization.StringSerializer}
+  value-serializer: ${VALUE_SERIALIZER:org.springframework.kafka.support.serializer.JsonSerializer}
+
+migration-service-consumer:
+  bootstrap-servers: ${BOOTSTRAP_SERVERS:localhost:39092,localhost:49092}
+  topics: ${TOPIC_NAME:token-migration-data}
+  key-deserializer: ${KEY_DESERIALIZER:org.apache.kafka.common.serialization.StringDeserializer}
+  value-deserializer: ${VALUE_DESERIALIZER:org.springframework.kafka.support.serializer.JsonDeserializer}
+  group-id: ${GROUP_ID:migration-service-group}
+  auto-offset-reset: ${AUTO_OFFSET_RESET:earliest}
+  auto-offset-commit: ${AUTO_OFFSET_COMMIT:true}
+
+logging:
+  level:
+    org.apache.kafka: info
