@@ -60,7 +60,11 @@ public class MigrationConsumer {
         CompletableFuture.allOf(futures).thenRun(() -> {
             // Decrement the batch count after processing all records in the batch
             decrementBatchCount(batchTrackingMap);
-            checkAndPerformFinalAction(messageConsumerRecords);
+
+            // Ensure that the final action is executed after all records are processed
+            if (isLastBatch(messageConsumerRecords)) {
+                acquireLockAndPerformFinalAction();
+            }
         }).join();
 
         System.out.println("Total Processing Time: " + (System.currentTimeMillis() - startTime));
@@ -76,11 +80,6 @@ public class MigrationConsumer {
         redisEntityService.createOrUpdate(entity);
     }
 
-    private void checkAndPerformFinalAction(ConsumerRecords<String, CsvRecord> records) {
-        if (isLastBatch(records)) {
-            acquireLockAndPerformFinalAction();
-        }
-    }
 
     private boolean isLastBatch(ConsumerRecords<String, CsvRecord> records) {
         for (ConsumerRecord<String, CsvRecord> record : records) {
@@ -125,6 +124,7 @@ public class MigrationConsumer {
                     return Integer.compare(id1, id2);
                 })
                 .collect(Collectors.toList());
+        System.out.println("Sorted List size: "+sortedList.size());
 
         String fileName = "/Users/mohammadabumohaisen/Documents/mohammad2.csv";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
