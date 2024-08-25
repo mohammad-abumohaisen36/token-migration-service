@@ -1,9 +1,9 @@
-package com.tokenmigration.app.repository.impl;
+package com.tokenmigration.app.repository.mongo.impl;
 
 
 import com.tokenmigration.app.dto.OperationMigrationDto;
-import com.tokenmigration.app.entity.MigrationOperationsEntity;
-import com.tokenmigration.app.repository.OperationsRepository;
+import com.tokenmigration.app.entity.mongo.MigrationOperationsEntity;
+import com.tokenmigration.app.repository.mongo.OperationsRepository;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
 
@@ -30,7 +30,7 @@ public class OperationsRepositoryImpl implements OperationsRepository {
 
 
     public MigrationOperationsEntity createOrUpdate(OperationMigrationDto operationMigrationDto) {
-        // Check if a document with the given migrationReference exists
+
         boolean exists = existsByMigrationReference(operationMigrationDto.getMigrationReference());
 
         if (!exists) {

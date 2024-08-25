@@ -6,41 +6,34 @@ import com.tokenmigration.app.model.response.MigrationOperationResponse;
 import com.tokenmigration.app.model.reuest.MigrationRequest;
 import com.tokenmigration.app.service.OperationsHistoryService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
-@RequestMapping("/migration/api")
-
-public class OperationsHistoryController {
+@RequestMapping("/migration/operations")
+@RequiredArgsConstructor
+public class OperationController {
 
     private final OperationsHistoryService operationsHistoryService;
 
-    public OperationsHistoryController(OperationsHistoryService operationsHistoryService) {
-        this.operationsHistoryService = operationsHistoryService;
-    }
 
     @PostMapping("/operation")
     public ResponseEntity<MigrationOperationResponse> addOperation(@Valid @RequestBody final MigrationRequest migrationRequest) {
         return ResponseEntity.ok(operationsHistoryService.createOrUpdate(migrationRequest));
     }
 
-    @GetMapping("/{tenantReference}")
+    @GetMapping("/tenants/{tenantReference}")
     public ResponseEntity<?> getAllOperationByTenantReference(@PathVariable String tenantReference) {
         List<OperationMigrationDto> operations = operationsHistoryService.findAllByTenantReference(tenantReference);
         return ResponseEntity.ok(operations);
     }
 
-
-    @PostMapping("/migrate")
-    public ResponseEntity<String> validateAndMigrate(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("migrationReference") String migrationReference) {
-
-        return ResponseEntity.ok("File and data received successfully");
-    }
 }

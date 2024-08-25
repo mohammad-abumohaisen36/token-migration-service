@@ -1,4 +1,4 @@
-package com.tokenmigration.app.entity;
+package com.tokenmigration.app.entity.mongo;
 
 import com.tokenmigration.app.enums.MigrateFrom;
 import com.tokenmigration.app.enums.MigrationStatus;

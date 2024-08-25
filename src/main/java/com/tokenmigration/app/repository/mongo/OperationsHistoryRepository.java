@@ -1,7 +1,6 @@
-package com.tokenmigration.app.repository;
+package com.tokenmigration.app.repository.mongo;
 
-import com.tokenmigration.app.entity.MigrationOperationsEntity;
-import jakarta.validation.constraints.NotNull;
+import com.tokenmigration.app.entity.mongo.MigrationOperationsEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
