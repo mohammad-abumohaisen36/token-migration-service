@@ -31,7 +31,7 @@ migration-service-consumer:
   key-deserializer: ${KEY_DESERIALIZER:org.apache.kafka.common.serialization.StringDeserializer}
   value-deserializer: ${VALUE_DESERIALIZER:org.springframework.kafka.support.serializer.JsonDeserializer}
   group-id: ${GROUP_ID:migration-service-group}
-  auto-offset-reset: ${AUTO_OFFSET_RESET:earliest}
+  auto-offset-reset: ${AUTO_OFFSET_RESET:latest}
   auto-offset-commit: ${AUTO_OFFSET_COMMIT:false}
   listener: ${LISTENER:true}
 

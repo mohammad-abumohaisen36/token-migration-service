@@ -1,4 +1,4 @@
-package com.tokenmigration.app.service.impl;
+package com.tokenmigration.app.service.impl.records;
 
 import com.univocity.parsers.annotations.Parsed;
 import lombok.AllArgsConstructor;
@@ -8,10 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CsvRecord {
+public class CyberSourceRecord extends Record{
 
-    @Parsed(field = "id")
-    private int id;
     @Parsed(field = "code")
     private String code;
     @Parsed(field = "uuid")
@@ -22,6 +20,5 @@ public class CsvRecord {
     private String name;
     @Parsed(field = "expirationDate")
     private String expirationDate;
-
 
 }

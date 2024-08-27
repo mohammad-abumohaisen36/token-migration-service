@@ -21,7 +21,6 @@ public sealed class BaseMigrationRedisEntity permits SchemeMigrationEntity, TMMi
     private String outletReference;
     private String mid;
     private String tokenGroup;
-    private boolean fileGenerated;
     private MigrateFrom migrateFrom;
 
 }

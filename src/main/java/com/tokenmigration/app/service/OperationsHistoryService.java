@@ -19,5 +19,5 @@ public interface OperationsHistoryService {
     List<OperationMigrationDto> findAllByMid(String mid);
 
     List<OperationMigrationDto> findAllByMerchantRefAndTenantRef(String merchantRef, String tenantRef);
-    int read(byte[] file,String migrationId);
+
 }

@@ -1,5 +1,5 @@
 package com.tokenmigration.app.service;
 
 public interface MigrationService {
-    void validateAndMigrate(String file, String migrationReference);
+    int validateAndMigrate(byte[] byteArray, String migrationReference);
 }

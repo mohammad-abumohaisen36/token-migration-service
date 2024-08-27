@@ -1,20 +1,14 @@
 package com.tokenmigration.app.repository.redis;
 
-
-
 import com.tokenmigration.app.entity.redis.BaseMigrationRedisEntity;
 
-import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface MigrationRepository {
 
     BaseMigrationRedisEntity save(BaseMigrationRedisEntity entity);
 
-    Optional<BaseMigrationRedisEntity> findById(String id);
 
-    void deleteById(String id);
+    Stream<BaseMigrationRedisEntity> findAll();
 
-    Iterable<BaseMigrationRedisEntity> findAll();
-
-     boolean existsById(String id);
 }

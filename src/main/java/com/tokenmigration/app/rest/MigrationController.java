@@ -1,7 +1,7 @@
 package com.tokenmigration.app.rest;
 
 
-import com.tokenmigration.app.service.OperationsHistoryService;
+import com.tokenmigration.app.service.MigrationService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,13 +11,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-
 @RestController
 @RequestMapping("/migration")
 @RequiredArgsConstructor
 public class MigrationController {
 
-    private final OperationsHistoryService operationsHistoryService;
+    private final MigrationService migrationService;
 
 
     @PostMapping("/migrate/{migrationId}")
@@ -26,7 +25,7 @@ public class MigrationController {
             @PathVariable String migrationId) {
         try {
 
-            int read = operationsHistoryService.read(file.getBytes(),migrationId);
+            int read = migrationService.validateAndMigrate(file.getBytes(), migrationId);
             return ResponseEntity.ok("File and data received successfully :" + read);
         } catch (IOException e) {
             e.printStackTrace();

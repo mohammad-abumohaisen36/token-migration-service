@@ -1,13 +1,11 @@
 package com.tokenmigration.app.config;
 
 
-import com.tokenmigration.app.service.impl.CsvRecord;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import java.util.Properties;
 
@@ -26,7 +24,7 @@ public class KafkaProducerConfiguration {
 
 
     @Bean
-    public KafkaProducer<String, CsvRecord> kafkaProducer() {
+    public KafkaProducer<String, ?> kafkaProducer() {
         Properties properties = new Properties();
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, keySerializer);
@@ -39,7 +37,6 @@ public class KafkaProducerConfiguration {
         properties.setProperty(ProducerConfig.RETRY_BACKOFF_MS_CONFIG, "3000");
         properties.setProperty(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
         properties.setProperty(ProducerConfig.ACKS_CONFIG, "all");
-        properties.setProperty(JsonSerializer.ADD_TYPE_INFO_HEADERS, "*");
         properties.setProperty(ProducerConfig.MAX_REQUEST_SIZE_CONFIG, String.valueOf(2 * 1024 * 1024)); // 2MB
 
 

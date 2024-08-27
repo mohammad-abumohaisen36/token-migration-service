@@ -8,17 +8,14 @@ import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 @Repository
 public class RedissonMigrationRepository implements MigrationRepository {
 
     private final RedissonClient redissonClient;
     private static final String MAP_NAME = "migration_record";
-    private static final long TTL_SECONDS = 4 * 60; // Example: 1 hour TTL
-    private static final long MAX_IDLE_SECONDS = 2 * 60; // Example: 30 minutes max idle time
-
 
     @Autowired
     public RedissonMigrationRepository(RedissonClient redissonClient) {
@@ -30,34 +27,17 @@ public class RedissonMigrationRepository implements MigrationRepository {
     }
 
     @Override
-
     public BaseMigrationRedisEntity save(BaseMigrationRedisEntity entity) {
         RMapCache<String, BaseMigrationRedisEntity> mapCache = getMapCache();
-        mapCache.put(entity.getId(), entity, TTL_SECONDS, TimeUnit.SECONDS);
+        mapCache.put(entity.getId(), entity, 1, TimeUnit.HOURS);
         return entity;
     }
 
     @Override
-    public Optional<BaseMigrationRedisEntity> findById(String id) {
+    public Stream<BaseMigrationRedisEntity> findAll() {
         RMap<String, BaseMigrationRedisEntity> map = getMapCache();
-        return Optional.ofNullable(map.get(id));
+        return map.values().stream();
     }
 
-    @Override
-    public void deleteById(String id) {
-        RMap<String, BaseMigrationRedisEntity> map = getMapCache();
-        map.remove(id);
-    }
 
-    @Override
-    public Iterable<BaseMigrationRedisEntity> findAll() {
-        RMap<String, BaseMigrationRedisEntity> map = getMapCache();
-        return map.values();
-    }
-
-    @Override
-    public boolean existsById(String id) {
-        RMap<String, BaseMigrationRedisEntity> map = redissonClient.getMap("migration_record");
-        return map.containsKey(id);
-    }
 }
